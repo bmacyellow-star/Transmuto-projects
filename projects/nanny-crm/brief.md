@@ -1,7 +1,7 @@
 # Product Brief: Nanny Agency CRM
 
 > Created: 2026-03-07
-> Status: Draft
+> Status: Draft — Awaiting remaining answers
 > Author: Max 🚀
 
 ---
@@ -17,7 +17,7 @@ The result: agencies spend more time on admin than on the relationships that act
 | User Type | Description | Key Need |
 |-----------|-------------|----------|
 | Agency Admin | Owner/manager running the agency | Single platform to manage all operations — nannies, families, placements, compliance |
-| Agency Staff | Coordinators, recruiters | Efficient workflows for recruitment, matching, and ongoing management |
+| Agency Staff | Coordinators, recruiters (2+ staff typical) | Efficient workflows for recruitment, matching, and ongoing management |
 | Nannies | Childcare professionals on the agency's books | Easy onboarding, clear contracts, simple timesheets, visibility into placements |
 | Families | Parents seeking childcare | Transparent process, easy communication with agency, confidence in quality |
 
@@ -28,21 +28,24 @@ The result: agencies spend more time on admin than on the relationships that act
 - [ ] Contracts are generated and tracked within the system
 - [ ] Families and nannies have self-service portals
 - [ ] Agency has a clear dashboard view of their business
+- [ ] Contact list / CRM functionality for managing all agency relationships
 
 ## Assumptions
 
 1. **Agencies currently use fragmented tools** (spreadsheets, email, paper) — Confidence: High
 2. **Nannies and families will adopt a digital platform** if it's simple enough — Confidence: Medium
-3. **Australian market first** (employment law, contracts, tax implications are AU-specific) — Confidence: Medium (need to confirm with Bmac)
-4. **Agencies range from solo operators to 50+ staff** — Confidence: Medium
+3. **Australia-first** — AU employment law, contracts, tax, Fair Work compliance — Confidence: ✅ Confirmed
+4. **Agencies typically have 2+ staff** — multi-user/team support is a default requirement — Confidence: ✅ Confirmed
 5. **Timesheets need payroll integration eventually** but not for MVP — Confidence: Medium
+6. **Warm list of agencies available** for user research and early adoption — Confidence: ✅ Confirmed
 
 ## Constraints
 
 - **Technical:** Must work well on mobile (nannies and families are on phones)
+- **Market:** Australia-first (AU-specific employment law, awards, contracts)
 - **Timeline:** TBD
 - **Budget:** Lean — Supabase + Vercel stack
-- **Regulatory:** Employment contracts and timesheets have legal requirements (jurisdiction-dependent)
+- **Regulatory:** Employment contracts and timesheets have legal requirements under AU Fair Work
 - **Other:** Must be white-label-able or at least agency-brandable
 
 ## Competitive Landscape
@@ -55,12 +58,13 @@ The result: agencies spend more time on admin than on the relationships that act
 | Nanny-specific platforms (various) | Some handle matching | Usually marketplace-focused, not agency operations |
 | Spreadsheets + email | Free, flexible | No automation, no visibility, error-prone, doesn't scale |
 
-**Gap:** No single platform handles the full nanny agency lifecycle — from recruiting a nanny, through onboarding and contracts, to ongoing placement management and timesheets, while also managing the family relationship.
+**Gap:** No single platform handles the full nanny agency lifecycle — from recruiting a nanny, through onboarding and contracts, to ongoing placement management and timesheets, while also managing the family relationship and acting as a central contact hub.
 
 ## Initial Scope Thinking
 
 **Probably in (MVP):**
 - Agency dashboard (overview of nannies, families, placements)
+- **Contact list / CRM** — centralised directory of all agency contacts (nannies, families, referrers, partners) with notes, tags, activity history
 - Nanny profiles and recruitment pipeline
 - Family profiles and requirements
 - Placement matching (nanny ↔ family)
@@ -69,36 +73,56 @@ The result: agencies spend more time on admin than on the relationships that act
 - Basic onboarding checklists
 - Nanny self-service portal (profile, timesheets, documents)
 - Family self-service portal (placement details, communication)
+- **Team support** — multi-user with roles/permissions (admin, coordinator, etc.)
 
 **Probably out (for now):**
-- Payroll integration
+- Payroll integration (Xero/MYOB — future)
 - Automated invoicing
 - Background check integration
 - Training/certification tracking
 - Mobile native app (responsive web first)
 - Multi-agency / marketplace features
 - Advanced reporting and analytics
+- International expansion (different employment laws)
 
 ---
 
 ## Open Questions for Bmac
 
-1. **Target market:** Australia-first? Or broader from day one?
-2. **Agency size:** Solo operators, small teams, or enterprise agencies? (Affects complexity)
+1. ~~**Target market:** Australia-first?~~ ✅ **Australia-first confirmed**
+2. ~~**Agency size:**~~ ✅ **2+ staff typical, team support by default**
 3. **Pricing model thinking:** Per-agency SaaS? Per-nanny? Free tier?
-4. **Do you have domain expertise here?** Access to an agency for user research?
+4. ~~**Domain expertise / access:**~~ ✅ **Warm list of agencies available for research**
 5. **Contract templates:** Do we need to handle legal document generation, or just tracking?
 6. **Timesheet → payroll:** Is integration with Xero/MYOB a near-term need or future?
 7. **White-labelling:** Important for MVP or later?
-8. **Name:** "Nanny Agency CRM" is descriptive but not a product name. Any ideas?
+8. ~~**Name:**~~ 🔄 **Open — see name suggestions below**
+
+## Product Name Ideas 💡
+
+The name should feel trustworthy, warm, and professional. Nanny agencies care about relationships — the name should reflect care + organisation.
+
+| Name | Vibe | Notes |
+|------|------|-------|
+| **Kinder** | Warm, childcare-adjacent | German for "children" — simple, clean |
+| **Tend** | Caring, active | "To tend to" — captures the caregiving + management angle |
+| **Hive** | Organised, buzzing, community | Agency as the hive, nannies and families as the network |
+| **Nestled** | Safe, home, belonging | Families nest, nannies help create that |
+| **Cradl** | Nurturing, foundational | Evokes care from the start |
+| **Placed** | Direct, functional | It's about placements — says what it does |
+| **Mindi** | Friendly, approachable | Play on "minding" children — AU/UK term |
+| **Kith** | Close relationships, community | "Kith and kin" — about connection |
+
+Let me know if any resonate or if you want a different direction entirely.
 
 ---
 
 ## Approval
 
 - [ ] Bmac reviewed
-- [ ] Open questions answered
+- [x] Key questions answered (market, agency size, access)
+- [ ] Remaining questions answered (pricing, contracts, payroll, white-label, name)
 - [ ] Scope agreed
 - [ ] Ready to proceed to PRD
 
-> **Next step:** Bmac reviews this brief, answers open questions, then we create the PRD.
+> **Next step:** Bmac answers remaining questions + picks a name direction, then we create the PRD.
