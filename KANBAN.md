@@ -9,15 +9,16 @@
 
 ## 🔍 Discovery
 
-### Nanny Agency CRM
-- **Brief:** [In Progress](projects/nanny-crm/brief.md)
-- **Concept:** CRM for nanny agencies — manage nannies + families in one platform
-- **Scope:** Recruitment, contracts, onboarding, management, timesheets
-- **Started:** 2026-03-07
-- **Blockers:** None — awaiting brief completion and Bmac review
 
 ## 📋 Planning
 
+### Nanny Agency CRM
+- **PRD:** [Approved](projects/nanny-crm/prd.md)
+- **Architecture:** [Approved](projects/nanny-crm/architecture.md)
+- **Epics & Stories:** [In Review](projects/nanny-crm/epics-and-stories.md)
+- **Scope:** 10 epics, 43 stories, 9 implementation waves
+- **Started:** 2026-03-07
+- **Blockers:** None — awaiting stories approval, then Discuss phase
 
 ## 🏗️ Solutioning
 

@@ -1,7 +1,7 @@
 # Architecture: Nanny Agency CRM
 
 > Created: 2026-03-07
-> Status: Draft
+> Status: ✅ Approved
 > PRD: [PRD](prd.md)
 > Author: Max 🚀 (Architect lens)
 
@@ -15,7 +15,7 @@
 | UI Framework | **Tailwind CSS + shadcn/ui** | Clean, customisable components. No vendor lock-in. Accessible by default. |
 | Backend | **Next.js API Routes + Supabase** | API routes for business logic. Supabase handles auth, DB, storage, realtime. |
 | Database | **Supabase (PostgreSQL)** | RLS for multi-tenancy. Strong relational model for complex agency data. |
-| Auth | **Supabase Auth** | Email/password + magic link. Role-based via custom claims. |
+| Auth | **Supabase Auth** | OTP (SMS/email) for nannies/families. Email/password for agency staff. Role-based via custom claims. |
 | File Storage | **Supabase Storage** | Documents, contracts, certifications. Per-tenant bucket isolation. |
 | Hosting | **Vercel** | Zero-config Next.js deployment. Preview deployments. Edge functions. |
 | Email | **Resend** | Transactional emails (invites, notifications). Simple API. |
@@ -309,11 +309,12 @@ family_id IN (SELECT id FROM families WHERE user_id = auth.uid())
 ## Authentication Flow
 
 ```
-1. Agency owner signs up → creates Agency + first AgencyUser (owner role)
-2. Owner invites staff → AgencyUser created, invite email sent via Resend
-3. Staff invites nanny → Contact + Nanny created, invite email with magic link
-4. Staff invites family → Contact + Family created, invite email with magic link
-5. On login → middleware reads user role → redirects to correct portal
+1. Agency owner signs up (email/password) → creates Agency + first AgencyUser (owner role)
+2. Owner invites staff → AgencyUser created, invite email sent via Resend (email/password login)
+3. Staff invites nanny → Contact + Nanny created, invite email with OTP link
+4. Staff invites family → Contact + Family created, invite email with OTP link
+5. Nannies/families login via OTP (email or SMS) → no password to remember
+6. On login → middleware reads user role → redirects to correct portal
 ```
 
 **Role resolution:**
@@ -428,6 +429,33 @@ nanny-crm/
 
 ---
 
+## Mobile & App Store Strategy
+
+### PWA-Ready from Day One
+The app ships as a Progressive Web App:
+- Web app manifest for "Add to Home Screen"
+- Service worker for offline capability (cached pages, queued timesheet submissions)
+- Push notifications via Web Push API (supported on Android, improving on iOS)
+- Zero cost to implement alongside the responsive web build
+
+### Path to App Store
+When App Store presence is needed (likely for the family portal first):
+
+| Phase | Approach | Effort | Result |
+|-------|----------|--------|--------|
+| MVP | PWA | Included | Home screen install, offline, push (Android) |
+| V2 | Capacitor wrap | 1-2 weeks | Same codebase → native shell → App Store + Play Store |
+| V3 (if needed) | React Native | 4-8 weeks | True native family app, shares TS types + API layer |
+
+**Recommendation:** PWA now → Capacitor when agencies ask for App Store presence → React Native only if premium native UX becomes a competitive requirement.
+
+### Mobile-First Design Priority
+- **Family portal:** Mobile-first (primary device). Minimal UI, large touch targets, single-column.
+- **Nanny portal:** Mobile-first (timesheets submitted on phone). Quick-entry optimised.
+- **Agency portal:** Desktop-first (complex data, dashboards). Responsive but not mobile-primary.
+
+---
+
 ## Technical Decisions
 
 | Decision | Options Considered | Choice | Why |
@@ -439,6 +467,26 @@ nanny-crm/
 | PDF generation | React-PDF vs Puppeteer vs external | @react-pdf/renderer | No headless browser needed, works serverless |
 | Email | SendGrid vs Resend vs Postmark | Resend | Simple API, good DX, React Email templates |
 | Portal architecture | Separate apps vs monorepo vs route groups | Route groups in one app | Shared types, single deployment, simpler |
+
+---
+
+## Scale & Growth Path
+
+| Scale | Status | Infrastructure Notes |
+|-------|--------|---------------------|
+| 1–100 agencies | ✅ Comfortable | Supabase free/pro tier, single Vercel deployment |
+| 100–500 agencies | ✅ Comfortable | Supabase Pro, consider read replicas |
+| 500–2,000 agencies | ⚠️ Tune | Database indexing, query optimisation, edge caching. Supabase Team/Enterprise |
+| 2,000–10,000 agencies | ⚠️ Review | Connection pooling (PgBouncer), background job queue, CDN for documents |
+| 10,000+ agencies | 🔄 Evolve | Dedicated API service, managed Postgres, microservices for heavy workloads |
+
+**First bottlenecks at scale:**
+1. PDF generation → move to background queue (Bull/Redis or Supabase Edge Function)
+2. Document storage → CDN + signed URLs (already planned)
+3. Timesheet queries → indexes + materialised views for reporting
+4. Notifications → Supabase Realtime or dedicated service
+
+**Honest assessment:** This stack comfortably handles thousands of agencies. Product-market-fit will be the challenge long before infrastructure.
 
 ---
 
