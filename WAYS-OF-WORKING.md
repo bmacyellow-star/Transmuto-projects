@@ -14,7 +14,7 @@ This document defines how we collaborate to take ideas from concept to shipped p
 ## The Pipeline
 
 ```
-IDEA → BRIEF → PRD → ARCHITECTURE → EPICS/STORIES → DISCUSS → PLAN → EXECUTE → VERIFY → SHIP
+IDEA → BRIEF → PRD → DESIGN DIRECTION → ARCHITECTURE → EPICS/STORIES → DISCUSS → PLAN → EXECUTE → VERIFY → SHIP
 ```
 
 ### Phase 1: Discovery (BMAD)
@@ -26,6 +26,13 @@ IDEA → BRIEF → PRD → ARCHITECTURE → EPICS/STORIES → DISCUSS → PLAN �
 **Input:** Approved Brief
 **Max does:** Creates PRD using BMAD PM workflow — requirements discovery, scope definition, feature prioritisation
 **Output:** PRD with clear requirements, MVP scope, acceptance criteria
+
+### Phase 2.5: Design Direction (NEW)
+**Input:** Approved PRD
+**Max does:** Moodboard research, design system selection, key screen wireframes, design token definition
+**Output:** Design Direction doc (moodboard, tokens, layout decisions, key screen wireframes)
+**Gate:** Bmac approves visual direction before architecture locks
+**Methodology:** See `UX-UI-METHODOLOGY.md` for full details
 
 ### Phase 3: Solutioning (BMAD)
 **Input:** Approved PRD
@@ -131,6 +138,7 @@ Each project gets a GitHub repo:
 project-name/
 ├── docs/
 │   ├── planning-artifacts/     # BMAD outputs
+│   ├── design/                 # Design direction, moodboard, tokens
 │   │   ├── brief.md
 │   │   ├── prd.md
 │   │   ├── architecture.md
@@ -175,7 +183,9 @@ Each card shows: project name, current phase, last update, blockers.
 - **React + Node.js** — Default stack (flexible per project)
 - **OpenClaw** — Orchestration, coding agents, communication
 - **BMAD Method** — Process discipline (what to build)
-- **GSD Principles** — Execution discipline (how to build reliably)
+- **Figma + Figma MCP** — Design exploration and agent-readable designs
+- **shadcn/ui + Tailwind** — Default component library and styling
+- **v0.dev** — AI-generated component prototyping- **GSD Principles** — Execution discipline (how to build reliably)
 
 ---
 

@@ -7,7 +7,7 @@ Use this when kicking off a new project through the pipeline.
 ## Setup
 - [ ] Create GitHub repo for the project
 - [ ] Add project card to Kanban board (Inbox column)
-- [ ] Create `docs/planning-artifacts/` and `docs/implementation-artifacts/` directories
+- [ ] Create `docs/planning-artifacts/`, `docs/design/` and `docs/implementation-artifacts/` directories
 - [ ] Create `.planning/` directory for execution state
 
 ## Phase 1: Discovery
@@ -21,6 +21,13 @@ Use this when kicking off a new project through the pipeline.
 - [ ] Bmac approved PRD
 - [ ] Move card to Planning column
 
+## Phase 2.5: Design Direction
+- [ ] Complete [Moodboard](templates/design/moodboard.md)
+- [ ] Select design system and component library
+- [ ] Complete [Design Direction](templates/design/design-direction.md)
+- [ ] Key screen wireframes created (Figma or inline)
+- [ ] Design tokens defined
+- [ ] Bmac approved design direction
 ## Phase 3: Solutioning
 - [ ] Complete [Architecture](templates/solutioning/architecture.md)
 - [ ] Complete [Epics & Stories](templates/solutioning/epics-and-stories.md)
