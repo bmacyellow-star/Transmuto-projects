@@ -131,6 +131,21 @@ Nanny agencies in Australia run on fragmented tools. No platform handles the ful
 | FR9.2 | Role-based permissions | Access controlled by role (Owner, Admin, Coordinator) |
 | FR9.3 | Activity attribution | All actions logged with which team member performed them |
 
+### FR11-A: Public Intake Forms (Agency-Branded)
+**Priority:** P0 (MVP)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| FR11A.1 | Public nanny application form | Agency has a unique URL (e.g. app.nannyCRM.com/apply/little-stars) that nannies can access without logging in. Captures: personal details, qualifications, availability, preferences. Submits directly into the CRM as a new nanny contact in "Enquiry" status. |
+| FR11A.2 | Public family registration form | Agency has a unique URL (e.g. app.nannyCRM.com/register/little-stars) for families. Captures: parent details, children, care needs, preferences. Submits into CRM as a new family contact in "Prospect" status. |
+| FR11A.3 | Agency branding on public forms | Public forms display: agency logo, agency name, agency colour (optional). The form feels like the agency's own tool, not a generic platform. |
+| FR11A.4 | No login required | Public forms are accessible without authentication. Email verification optional (post-MVP). |
+| FR11A.5 | Confirmation page | After submission, show a branded thank-you page with next steps ("We'll be in touch within 48 hours"). |
+| FR11A.6 | Embeddable (future) | Forms can be embedded into an agency's existing website via iframe or script tag. Out of scope for MVP but architecture should not prevent it. |
+| FR11A.7 | Form customisation (future) | Agencies can toggle fields on/off and reorder sections. Out of scope for MVP — all agencies get the same form structure. |
+
+**Key principle:** These forms are the agency's first impression. They must be beautiful, minimal, and fast to complete. Select over input. No unnecessary fields. Mobile-first.
+
 ### FR11: Form UX & Data Entry
 **Priority:** P0 (MVP)
 
