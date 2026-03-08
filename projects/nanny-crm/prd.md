@@ -131,6 +131,26 @@ Nanny agencies in Australia run on fragmented tools. No platform handles the ful
 | FR9.2 | Role-based permissions | Access controlled by role (Owner, Admin, Coordinator) |
 | FR9.3 | Activity attribution | All actions logged with which team member performed them |
 
+### FR11: Form UX & Data Entry
+**Priority:** P0 (MVP)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| FR11.1 | Multi-step wizard pattern | All complex forms (nanny profile, family profile, placement creation) use a step-by-step wizard with progress indicator. Max 4-6 fields visible per step. |
+| FR11.2 | Select over input | Where a finite set of options exists, use select/dropdown/toggle/radio — not free text. Examples: qualifications, availability days, suburb, care type, certification type |
+| FR11.3 | Smart defaults and presets | Common values pre-selected where sensible. Example: break = 30min, start time = 8:00am, standard availability = Mon-Fri |
+| FR11.4 | Save as draft | Partially completed forms save automatically. Users can return and finish later. |
+| FR11.5 | Inline validation | Validation feedback appears inline as fields are completed — not on submit. Clear error messages with fix suggestions. |
+| FR11.6 | Minimal required fields | Only fields essential to create the record are required. Everything else is optional and can be added later. |
+| FR11.7 | Mobile-optimised forms | All forms work on mobile. Large touch targets (44px min). Single-column layout. Appropriate keyboard types (tel, email, date). |
+| FR11.8 | Contextual help | Complex or ambiguous fields include a short help text or tooltip. Example: "WWCC number format: VIC-XXXXXXX" |
+
+**Form UX Principles:**
+1. **Prefer selection over typing** — dropdowns, toggles, chips, radio groups
+2. **Progressive disclosure** — show only what is needed at each step
+3. **Forgiving** — save progress, allow skipping optional sections
+4. **Fast path** — common scenarios take the fewest steps
+
 ### FR10: Authentication & Tenant
 **Priority:** P0 (MVP)
 
