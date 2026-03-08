@@ -66,6 +66,16 @@ Step 1 → Step 2 → Step 3 → Outcome
 
 ---
 
+## Design System Requirement
+
+All UI work must use a centralised design system (`src/lib/design-system.ts` or equivalent).
+No page or component may hardcode typography, colours, spacing, or component styles.
+All visual tokens are defined once and imported everywhere.
+
+- [ ] Design system file is a required deliverable
+- [ ] All UI acceptance criteria include: "Uses design system tokens — no hardcoded styles"
+
+---
 ## Scope
 
 ### In Scope

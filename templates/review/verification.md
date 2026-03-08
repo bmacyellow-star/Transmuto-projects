@@ -15,6 +15,17 @@
 
 ---
 
+## Design System Compliance Check
+
+| # | Check | Status |
+|---|-------|--------|
+| 1 | Design system file exists (`src/lib/design-system.ts`) | ✅ / ❌ |
+| 2 | All pages import from design system — no hardcoded styles | ✅ / ❌ |
+| 3 | Changing a token in design-system.ts propagates to all pages | ✅ / ❌ |
+| 4 | No inline colour hex values in page/component files | ✅ / ❌ |
+| 5 | Typography consistent across all screens | ✅ / ❌ |
+
+---
 ## Manual Testing
 
 | # | Test | Steps | Expected Result | Actual Result | Status |

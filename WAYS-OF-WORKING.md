@@ -206,3 +206,30 @@ I'll route it to the right mode automatically.
 ---
 
 _This document is alive. We'll update it as we learn what works._
+
+---
+
+## Design System Rule (Mandatory)
+
+**Every project must have a centralised design system file.**
+
+This is non-negotiable. All UI components, pages, and screens reference the design system — never hardcode typography, colours, spacing, or component styles directly in page files.
+
+**What this means in practice:**
+- A `src/lib/design-system.ts` (or equivalent) is created as the **first task** of any build phase
+- All heading styles, card styles, badge styles, button styles, metric styles, layout tokens live in this one file
+- Every page and component imports from the design system — no inline style decisions
+- Changing a font, colour, or spacing value in the design system file propagates to every screen automatically
+
+**Why:**
+- Single source of truth for all visual decisions
+- Design iteration is fast (change one file, not twenty)
+- Agents produce consistent UI without drifting
+- QA is simpler — check the system, not every page
+
+**This rule applies to:**
+- PRDs (must reference design system requirement)
+- Architecture docs (must include design system in file structure)
+- Every epic and story with UI work (acceptance criteria must include design system compliance)
+- Verification phase (design system adherence is a check)
+

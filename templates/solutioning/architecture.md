@@ -95,6 +95,29 @@ _[Describe key relationships between entities]_
 
 ---
 
+## Design System
+
+Every project includes a centralised design system as a core architectural component.
+
+**File:** `src/lib/design-system.ts` (or equivalent for non-React projects)
+
+**Contains:**
+- Typography classes (heading levels, body, labels, page titles, card titles)
+- Card styles (base, warning, variants)
+- Badge/status styles (all colour variants)
+- Button styles (primary, secondary, destructive, full-width)
+- Metric/data display styles
+- Layout tokens (spacing, containers)
+- Colour references for pipeline/status states
+
+**Rules:**
+- Created as the **first task** of the build phase
+- All pages and components import from this file
+- No hardcoded typography, colours, or spacing in page files
+- Design direction doc tokens translate directly into this file
+- Changes to visual style only require editing this one file
+
+---
 ## Constraints & Trade-offs
 
 _[What technical compromises are we making and why?]_

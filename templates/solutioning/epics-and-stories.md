@@ -63,6 +63,17 @@ _[Continue pattern...]_
 
 ---
 
+## Design System Compliance
+
+**Every story with UI work must include this acceptance criterion:**
+
+> ✅ All styles reference the centralised design system (`src/lib/design-system.ts`) — no hardcoded typography, colours, or spacing.
+
+This is a **mandatory acceptance criterion** — not optional. If a story touches UI, it references the design system. No exceptions.
+
+The first story in Wave 1 must include creating the design system file with all tokens from the Design Direction doc.
+
+---
 ## Dependency Map
 
 ```
