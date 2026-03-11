@@ -27,6 +27,14 @@ IDEA → BRIEF → PRD → DESIGN DIRECTION → ARCHITECTURE → EPICS/STORIES �
 **Max does:** Creates PRD using BMAD PM workflow — requirements discovery, scope definition, feature prioritisation
 **Output:** PRD with clear requirements, MVP scope, acceptance criteria
 
+
+### Phase 2a: AutoPRD (Autonomous Quality Loop)
+**Input:** Draft PRD from Phase 2
+**Max does:** Runs the `autoprd` skill — an autonomous improvement loop inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch). The loop evaluates the PRD against a 10-dimension rubric (completeness, consistency, clarity, user centrality, testability, scope discipline, edge cases, technical feasibility, prioritisation, internal coherence), makes surgical improvements targeting the weakest dimension each iteration, and keeps or discards based on whether the composite score improved. After convergence, an independent agent (different model/context) reviews the PRD blind to catch score inflation.
+**Output:** Stress-tested PRD with full iteration history, independent review, and score trajectory
+**Gate:** PRD must pass both the loop (≥8.5) AND independent review before proceeding to Design Direction
+**Key principle:** Humans program the process (rubric + constraints), agents iterate on the work product. The PRD version history shows exactly what changed and why at each step.
+
 ### Phase 2.5: Design Direction (NEW)
 **Input:** Approved PRD
 **Max does:** Moodboard research, design system selection, key screen wireframes, design token definition
@@ -186,6 +194,7 @@ Each card shows: project name, current phase, last update, blockers.
 - **Figma + Figma MCP** — Design exploration and agent-readable designs
 - **shadcn/ui + Tailwind** — Default component library and styling
 - **v0.dev** — AI-generated component prototyping- **GSD Principles** — Execution discipline (how to build reliably)
+- **AutoPRD Skill** — Autonomous PRD improvement loop (evaluate → improve → measure → keep/discard)
 
 ---
 
