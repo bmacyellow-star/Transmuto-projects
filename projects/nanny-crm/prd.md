@@ -38,6 +38,63 @@ Nanny agencies in Australia run on fragmented tools. No platform handles the ful
 | **Contact** | Generic reference to a nanny or family record when the distinction doesn't matter (e.g. in messaging) |
 | **Compliance** | Whether a nanny's required documents (WWCC, First Aid, Police Check) are current and verified |
 
+### State Machines
+
+#### Nanny Lifecycle (two independent dimensions)
+
+**`status`** — the nanny's overall relationship with the agency:
+```
+Prospect → Active → Inactive
+```
+- **Prospect:** Not yet through recruitment. Default for new nannies.
+- **Active:** Cleared recruitment, available for placements.
+- **Inactive:** Archived (left agency, no longer available).
+
+**`listing_stage`** — the nanny's position in the recruitment funnel (only applies while status = Prospect):
+```
+Enquiry → Application → Interview → Reference Check → Onboarding → [completed]
+```
+- When listing_stage reaches "completed", status transitions from Prospect → Active.
+- listing_stage is NULL when status = Active or Inactive.
+- These are **independent fields** — status tracks the relationship, listing_stage tracks recruitment progress.
+
+**Constraint:** A nanny with status = Active MUST have listing_stage = NULL. A nanny with status = Prospect MUST have a listing_stage value. This is enforced at the database level.
+
+#### Placement Lifecycle
+```
+Proposed → Confirmed → Active → Completed / Terminated
+           Proposed → Trial → Active → Completed / Terminated
+```
+- **Proposed:** Created but not yet agreed by all parties.
+- **Confirmed:** Agreed, not yet started (start date in future).
+- **Trial:** Active trial period (only for trial-type placements).
+- **Active:** Ongoing placement.
+- **Completed:** Ended normally (end date reached or manually completed).
+- **Terminated:** Ended early (by agency, nanny, or family).
+
+#### Contract Lifecycle
+```
+Draft → Sent → Signed → Active → Expired / Terminated
+```
+- **Draft:** Generated from template, not yet sent.
+- **Sent:** Sent to signing parties, awaiting signatures.
+- **Signed:** All parties signed, not yet active (placement not started).
+- **Active:** Contract in effect (placement active).
+- **Expired:** End date passed. Or unsigned after 30 days (auto-expire).
+- **Terminated:** Ended early (linked to placement termination).
+
+#### Portal Visibility Rules
+
+| Data | Nanny Portal | Family Portal |
+|------|-------------|---------------|
+| Own profile | Full read + edit (name, contact, availability, preferences) | Full read + edit (parent details, children, requirements) |
+| Own documents | Upload + view. Cannot see verification status notes | Not applicable |
+| Own placements | View: family name, schedule, rate, contract status | View: nanny first name + last initial, qualifications, compliance status (green/amber/red — not document details), schedule |
+| Own timesheets | Submit + view + edit (if Draft/Rejected) | View only (approved timesheets for their placements) |
+| Contracts | View own contracts, sign when sent | View own contracts, sign when sent |
+| Nanny qualifications | Not applicable | View: qualification names and compliance indicator. Cannot see document files, expiry dates, or verification details |
+| Other nannies/families | No access | No access |
+
 ---
 
 ## User Personas
@@ -83,7 +140,7 @@ Nanny agencies in Australia run on fragmented tools. No platform handles the ful
 ## Functional Requirements
 
 ### FR1: Agency Dashboard
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 The dashboard is the agency's operational nerve centre. It answers one question: **"What needs my attention right now?"**
 
@@ -133,7 +190,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR2: Families Directory
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 **Design rationale:** Families have their own dedicated directory page. The agency manages family profiles, children, care requirements, and placement history from a single location.
 
@@ -164,7 +221,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR3: Nannies Directory
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 **Design rationale:** Nannies have their own dedicated directory page. The agency manages nanny profiles, compliance status, availability, and placement history from a single location. Compliance indicators are prominent — the agency needs to see at a glance who is compliant and who needs attention.
 
@@ -195,7 +252,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR4: Nanny Profile Page
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 **Design rationale:** The nanny profile is where the agency spends the most time. It needs to surface compliance status (documents), current placement, and listing stage position at a glance — then allow deep dives into each area.
 
@@ -264,7 +321,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR5: Family Profile Page
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 **Design rationale:** The family profile centres on two things: their children (the reason they need a nanny) and their care requirements (how the agency matches them). Everything else supports those core needs.
 
@@ -329,7 +386,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR6: Placement Management
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 **Design rationale:** Placements are the core unit of the agency's business — the connection between a nanny and a family. The placement page is where schedule, contract, timesheets, and both profiles converge. Contracts and agreements are managed within placement context — not as a separate section.
 
@@ -386,7 +443,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR7: Listings (Recruitment Pipeline)
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 **Design rationale:** Listings tracks the nanny recruitment funnel — from enquiry to active. It's a separate page from the Nannies directory. Nannies live in the directory (FR3); Listings tracks their recruitment journey. Stages advance when real actions are completed — not by manual drag. This ensures data quality and compliance.
 
@@ -424,7 +481,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR8: Timesheets
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
@@ -437,7 +494,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR9: Onboarding
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
@@ -451,7 +508,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR10: Communication
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 **Design rationale:** Agencies need to communicate with nannies and families directly from the platform. This replaces scattered email/SMS/WhatsApp threads with a centralised, logged communication system. Every message is recorded in the contact's activity log. The Communication page provides a unified view of all agency messaging — inbound and outbound.
 
@@ -517,7 +574,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR11: Team & Multi-user
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
@@ -530,7 +587,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR12: Authentication & Tenant
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
@@ -544,7 +601,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR13: Form UX & Data Entry
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
@@ -566,7 +623,7 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 ---
 
 ### FR14: Public Intake Forms (Agency-Branded)
-**Priority:** P0 (MVP)
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
@@ -579,6 +636,34 @@ The dashboard is the agency's operational nerve centre. It answers one question:
 | FR14.7 | Form customisation (future) | Agencies can toggle fields on/off and reorder sections. Out of scope for MVP — all agencies get the same form structure |
 
 **Key principle:** These forms are the agency's first impression. They must be beautiful, minimal, and fast to complete. Select over input. No unnecessary fields. Mobile-first.
+
+
+---
+
+### FR15: Nanny & Family Portals
+**Priority:** See [Feature Prioritisation](#feature-prioritisation-moscow-within-mvp) for Must/Should/Could classification
+
+**Design rationale:** Portals are the self-service interfaces for nannies and families. They are separate from the agency admin interface, with limited functionality and a simplified UI. The family portal is intentionally minimal — families should rarely need to log in.
+
+#### Nanny Portal
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| FR15.1 | Nanny portal navigation | Sidebar: **Dashboard** (current placement, upcoming shifts, alerts), **Timesheets** (submit/view), **Documents** (upload/view), **Profile** (edit personal details, availability, preferences), **Onboarding** (visible only during onboarding status) |
+| FR15.2 | Nanny first-run experience | After first magic link login: welcome screen with agency branding → guided flow: upload photo → confirm contact details → set availability → upload required documents. Progress bar shows completion. Can skip steps and return later |
+| FR15.3 | Nanny portal permissions | Can edit: own contact details, availability, preferences, photo. Can upload: documents. Can submit: timesheets. Can view: own placements, own approved timesheets, own documents (not verification notes). Cannot view: other nannies, families (except family first name on placement), agency settings, financial data beyond own rate |
+
+#### Family Portal
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| FR15.4 | Family portal navigation | Sidebar: **Home** (current placement summary, any action items), **Placement** (nanny info, schedule, contract status), **Timesheets** (FYI view of approved timesheets), **Profile** (edit family details, children, requirements) |
+| FR15.5 | Family first-run experience | After first magic link login: welcome screen with agency branding → confirm parent contact details → review children info (pre-filled by agency) → done. Maximum 2 steps. No document uploads required |
+| FR15.6 | Family portal permissions | Can edit: own parent contact details, children info, care requirements, communication preferences. Can view: assigned nanny (first name + last initial, photo, qualifications list, compliance indicator — green/amber/red only, no document details). Can view: placement schedule, contract status, approved timesheets. Cannot view: nanny contact details (phone/email/address), nanny documents, nanny rate, other families, agency internal data |
+| FR15.7 | Contract signing (family) | When a contract is sent for signing: family receives email notification with magic link → portal shows contract in "Action Required" banner on Home → family clicks to view contract (rendered HTML, not raw PDF) → "Sign" button with checkbox "I have read and agree to the terms" → signature captured (typed name + timestamp, not wet signature) → contract status updates to Signed → agency notified |
+| FR15.8 | Contract signing (nanny) | Same flow as FR15.7 but in nanny portal. Both parties must sign for contract to reach Signed status. Order: agency generates → sends to nanny → nanny signs → sends to family → family signs → Signed |
+| FR15.9 | Family action items | Home page shows pending actions: unsigned contracts (with "Sign now" CTA), feedback requests (post-MVP). If no actions pending: "Everything is taken care of. [Agency name] is managing your care arrangement." No empty dashboard — always a reassuring message |
+| FR15.10 | Minimal notification strategy | Families receive email only for: contract sent for signing, placement change (new nanny, schedule change), and agency-initiated messages. No timesheet notifications, no document notifications, no listing notifications. Maximum 1-2 emails per month in normal operation |
 
 ---
 
@@ -802,7 +887,7 @@ Both messages logged in nanny's activity
 ## Scope
 
 ### In Scope (MVP)
-Everything in FR1–FR14 above.
+Everything in FR1–FR15 above.
 
 ### Out of Scope (MVP)
 - Other contacts (referrers, partners, generic contacts) — dropped for MVP
@@ -824,7 +909,7 @@ Everything in FR1–FR14 above.
 
 ## Feature Prioritisation (MoSCoW within MVP)
 
-While all FRs are in MVP scope, they are not equal priority. This MoSCoW classification guides build order and identifies what could be deferred if timeline pressure requires it.
+**This section is the authoritative priority source.** Individual FR sections no longer carry P0/P1 labels — all prioritisation is centralised here to avoid contradictions. MoSCoW classification guides build order and identifies what can be deferred if timeline pressure requires it.
 
 ### Must Have (Launch blockers — product does not function without these)
 - **FR1** Agency Dashboard (core: FR1.1–FR1.7. Activity feed FR1.8–FR1.10 is Should Have)
@@ -837,6 +922,7 @@ While all FRs are in MVP scope, they are not equal priority. This MoSCoW classif
 - **FR8** Timesheets (FR8.1–FR8.4. Overtime flags FR8.5 is Should Have)
 - **FR11** Team & Multi-user (all)
 - **FR12** Authentication & Tenant (all)
+- **FR15** Nanny & Family Portals (core: FR15.1–FR15.6, FR15.9–FR15.10. Contract signing FR15.7–FR15.8 is Should Have)
 
 ### Should Have (Expected at launch but could ship in fast-follow if needed)
 - **FR1.8–FR1.10** Activity feed on dashboard
